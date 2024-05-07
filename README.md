@@ -2,4 +2,6 @@
 ---
 $$Introduction$$
 
-$$About us$$
+$$About \ \ us$$
+-
+<code><img height="100" alt="YenHuynh" src="images/YenHuynh.jpg"></code>
