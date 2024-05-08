@@ -18,5 +18,8 @@ $$About \ \ us$$
 | ----------------------------------------------------------------------------------- | --------------------------|
 
 ```diff
-git checkout -b "CST8152_310 Compilers"
+git checkout -b 'CST8152_310 Compilers'
+git add 'Assignments'
+git commit -m 'Programming Language'
+git push -u origin 'CoreFlex'
 ```
