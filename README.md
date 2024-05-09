@@ -15,9 +15,8 @@ git push -u origin 'CoreFlex'
 $$About \ \ us$$
 ---
 | <code><img height="200" alt="YenHuynh" src="images/YenHuynh.jpg"></code>  | <code><img height="200" alt="Mohammed" src="images/MohammedMuhsinShaik.jpg"></code> | 
-| - | - |
-Mohammed Muhsin Shaik </br> 041 078 827 </br> moha0987@algonquinlive.com || Yen Huynh </br> 041 068 712 </br> huyn0115@algonquinlive.com |
-
+| - | - | 
+| Yen Huynh </br> 041 068 712 </br> huyn0115@algonquinlive.com | Mohammed Muhsin Shaik </br> 041 078 827 </br> moha0987@algonquinlive.com |
 
 ---
 $$Language$$
