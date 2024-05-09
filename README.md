@@ -13,7 +13,7 @@ git push -u origin 'CoreX'
 ```
 ---
 $$About \ \ us$$
----
+-
 
 | <code><img height="300" alt="YenHuynh" src="images/YenHuynh.jpg"></code>  | <code><img height="300" alt="Mohammed" src="images/MohammedMuhsinShaik.jpg"></code> | 
 | - | - | 
@@ -22,3 +22,4 @@ $$About \ \ us$$
 ---
 $$Language$$
 -
+<code><img height="300" alt="CoreX" src="images/logo.pnj"></code>
