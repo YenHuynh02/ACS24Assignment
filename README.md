@@ -22,4 +22,5 @@ $$About \ \ us$$
 ---
 $$Language$$
 -
-<code><img height="300" alt="CoreX" src="images/logo.pnj"></code>
+
+<p align="center"><img height="300" alt="CoreX" src="images/logo.png"></p>
