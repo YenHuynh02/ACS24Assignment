@@ -23,4 +23,4 @@ $$About \ \ us$$
 $$Language$$
 -
 
-<p align="center"><img height="300" alt="CoreX" src="images/logo.png"></p>
+<p align="center"><img height="300" alt="CoreX" src="images/logo.jpg"></p>
