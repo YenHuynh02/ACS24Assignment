@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Summer, 2024
@@ -9,23 +9,23 @@
 # ECHO "=---------------------------------------="
 # ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
 # ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
-# ECHO "    @@      @& @   @ @       @     @@    ”
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
-# ECHO "    @@      & @ @  @@              @@    ”
-# ECHO "    @@       @/ @*@ @ @   @        @@    ”
-# ECHO "    @@           @@@@  @@ @ @      @@    ”
-# ECHO "    @@            /@@    @@@ @     @@    ”
-# ECHO "    @@     @      / /     @@ @     @@    ”
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@         S O F I A           @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
+# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    â€
+# ECHO "    @@                             @@    â€
+# ECHO "    @@           %&@@@@@@@@@@@     @@    â€
+# ECHO "    @@       @%% (@@@@@@@@@  @     @@    â€
+# ECHO "    @@      @& @   @ @       @     @@    â€
+# ECHO "    @@     @ @ %  / /   @@@@@@     @@    â€
+# ECHO "    @@      & @ @  @@              @@    â€
+# ECHO "    @@       @/ @*@ @ @   @        @@    â€
+# ECHO "    @@           @@@@  @@ @ @      @@    â€
+# ECHO "    @@            /@@    @@@ @     @@    â€
+# ECHO "    @@     @      / /     @@ @     @@    â€
+# ECHO "    @@     @ @@   /@/   @@@ @      @@    â€
+# ECHO "    @@     @@@@@@@@@@@@@@@         @@    â€
+# ECHO "    @@                             @@    â€
+# ECHO "    @@         S O F I A           @@    â€
+# ECHO "    @@                             @@    â€
+# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    â€
 # ECHO "                                         "
 # ECHO "[READER SCRIPT .........................]"
 # ECHO "                                         "
@@ -35,7 +35,7 @@
 ***********************************************************
 * File name: Reader.c
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
+* Course: CST 8152 â€“ Compilers, Lab Section: [011, 012, 013]
 * Assignment: A12.
 * Date: May 01 2024
 * Professor: Paulo Sousa
@@ -59,27 +59,27 @@
 #include "Reader.h"
 #endif
 
-/*
-***********************************************************
-* Function name: readerCreate
-* Purpose: Creates the buffer reader according to capacity, increment
-	factor and operational mode ('f', 'a', 'm')
-* Author: Svillen Ranev / Paulo Sousa
-* History/Versions: S22
-* Called functions: calloc(), malloc()
-* Parameters:
-*   size = initial capacity
-*   increment = increment factor
-*   mode = operational mode
-* Return value: bPointer (pointer to reader)
-* Algorithm: Allocation of memory according to inicial (default) values.
-* TODO ......................................................
-*	- Adjust datatypes for your LANGUAGE.
-*   - Use defensive programming
-*	- Check boundary conditions
-*	- Check flags.
-*************************************************************
-*/
+ /*
+ ***********************************************************
+ * Function name: readerCreate
+ * Purpose: Creates the buffer reader according to capacity, increment
+	 factor and operational mode ('f', 'a', 'm')
+ * Author: Svillen Ranev / Paulo Sousa
+ * History/Versions: S22
+ * Called functions: calloc(), malloc()
+ * Parameters:
+ *   size = initial capacity
+ *   increment = increment factor
+ *   mode = operational mode
+ * Return value: bPointer (pointer to reader)
+ * Algorithm: Allocation of memory according to inicial (default) values.
+ * TODO ......................................................
+ *	- Adjust datatypes for your LANGUAGE.
+ *   - Use defensive programming
+ *	- Check boundary conditions
+ *	- Check flags.
+ *************************************************************
+ */
 
 BufferPointer readerCreate(corex_intg size, corex_intg increment, corex_intg mode) {
 	BufferPointer readerPointer;
@@ -105,7 +105,7 @@ BufferPointer readerCreate(corex_intg size, corex_intg increment, corex_intg mod
 		readerPointer->size = size;
 	else
 		readerPointer->size = READER_DEFAULT_SIZE;
-	if (increment!= 0)
+	if (increment != 0)
 		readerPointer->increment = increment;
 	else
 		readerPointer->increment = READER_DEFAULT_INCREMENT;
@@ -156,7 +156,8 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, corex_char ch) {
 	if (readerPointer->position.wrte * (corex_intg)sizeof(corex_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
 		readerPointer->flags &= ~FUL;
-	} else {
+	}
+	else {
 		/* TO_DO: Reset Full flag */
 		switch (readerPointer->mode) {
 		case MODE_FIXED:
@@ -286,6 +287,7 @@ corex_boln readerIsEmpty(BufferPointer const readerPointer) {
 *   - Use defensive programming
 *	- Check boundary conditions
 *	- Adjust for your LANGUAGE.
+*	- Adjust for your LANGUAGE.
 *************************************************************
 */
 corex_boln readerSetMark(BufferPointer const readerPointer, corex_intg mark) {
@@ -374,6 +376,9 @@ corex_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescrip
 */
 corex_boln readerRecover(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return;
+	}
 	/* TO_DO: Recover positions */
 	readerPointer->position.read = 0;
 	return COREX_TRUE;
@@ -442,7 +447,7 @@ corex_char readerGetChar(BufferPointer const readerPointer) {
 	/* TO_DO: Check condition to read/wrte */
 	/* TO_DO: Set EOB flag */
 	/* TO_DO: Reset EOB flag */
-	if (readerPointer->position.wrte>0)
+	if (readerPointer->position.wrte > 0)
 		return readerPointer->content[readerPointer->position.read++];
 	return READER_TERMINATOR;
 }
@@ -465,8 +470,11 @@ corex_char readerGetChar(BufferPointer const readerPointer) {
 */
 corex_string readerGetContent(BufferPointer const readerPointer, corex_intg pos) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return content (string) */
-	return readerPointer->content + pos;;
+	return readerPointer->content + pos;
 }
 
 
@@ -508,8 +516,11 @@ corex_intg readerGetPosRead(BufferPointer const readerPointer) {
 */
 corex_intg readerGetPosWrte(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return wrte */
-	return 0;
+	return readerPointer->position.wrte;
 }
 
 
@@ -550,8 +561,11 @@ corex_intg readerGetPosMark(BufferPointer const readerPointer) {
 */
 corex_intg readerGetSize(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return size */
-	return 0;
+	return readerPointer->size;
 }
 
 /*
@@ -570,8 +584,12 @@ corex_intg readerGetSize(BufferPointer const readerPointer) {
 */
 corex_intg readerGetInc(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return increment */
-	return 0;
+	return readerPointer->increment;
+	
 }
 
 /*
@@ -590,8 +608,11 @@ corex_intg readerGetInc(BufferPointer const readerPointer) {
 */
 corex_intg readerGetMode(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return mode */
-	return 0;
+	return readerPointer->mode;
 }
 
 
@@ -611,6 +632,10 @@ corex_intg readerGetMode(BufferPointer const readerPointer) {
 */
 corex_byte readerGetFlags(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
+	return readerPointer->flags;
 	/* TO_DO: Return flags */
 	return 0;
 }
@@ -631,7 +656,14 @@ corex_byte readerGetFlags(BufferPointer const readerPointer) {
 */
 corex_void readerPrintStat(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Print the histogram */
+	for (int i = 0; i < NCHAR; i++) {
+		printf("B[ ] = %d, ", readerPointer->histogram[i]);
+	}
+	printf("\n");
 }
 
 /*
@@ -649,8 +681,11 @@ corex_void readerPrintStat(BufferPointer const readerPointer) {
 */
 corex_intg readerNumErrors(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL || readerPointer < 0 || readerPointer > NCHAR) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Returns the number of errors */
-	return 0;
+	return readerPointer->numReaderErrors;
 }
 
 /*
@@ -670,6 +705,9 @@ corex_intg readerNumErrors(BufferPointer const readerPointer) {
 
 corex_void readerChecksum(BufferPointer readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return;
+	}
 	/* TO_DO: Adjust the checksum to flags */
 	return;
 }

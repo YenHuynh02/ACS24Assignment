@@ -1,4 +1,4 @@
-/*
+Ôªø/*
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Summer, 2024
@@ -9,23 +9,23 @@
 # ECHO "=---------------------------------------="
 # ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
 # ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    î
-# ECHO "    @@                             @@    î
-# ECHO "    @@           %&@@@@@@@@@@@     @@    î
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    î
-# ECHO "    @@      @& @   @ @       @     @@    î
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    î
-# ECHO "    @@      & @ @  @@              @@    î
-# ECHO "    @@       @/ @*@ @ @   @        @@    î
-# ECHO "    @@           @@@@  @@ @ @      @@    î
-# ECHO "    @@            /@@    @@@ @     @@    î
-# ECHO "    @@     @      / /     @@ @     @@    î
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    î
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    î
-# ECHO "    @@                             @@    î
-# ECHO "    @@         S O F I A           @@    î
-# ECHO "    @@                             @@    î
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    î
+# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ‚Äù
+# ECHO "    @@                             @@    ‚Äù
+# ECHO "    @@           %&@@@@@@@@@@@     @@    ‚Äù
+# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ‚Äù
+# ECHO "    @@      @& @   @ @       @     @@    ‚Äù
+# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ‚Äù
+# ECHO "    @@      & @ @  @@              @@    ‚Äù
+# ECHO "    @@       @/ @*@ @ @   @        @@    ‚Äù
+# ECHO "    @@           @@@@  @@ @ @      @@    ‚Äù
+# ECHO "    @@            /@@    @@@ @     @@    ‚Äù
+# ECHO "    @@     @      / /     @@ @     @@    ‚Äù
+# ECHO "    @@     @ @@   /@/   @@@ @      @@    ‚Äù
+# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ‚Äù
+# ECHO "    @@                             @@    ‚Äù
+# ECHO "    @@         S O F I A           @@    ‚Äù
+# ECHO "    @@                             @@    ‚Äù
+# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ‚Äù
 # ECHO "                                         "
 # ECHO "[READER SCRIPT .........................]"
 # ECHO "                                         "
@@ -35,7 +35,7 @@
 ************************************************************
 * File name: compilers.c
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 ñ Compilers, Lab Section: [011, 012]
+* Course: CST 8152 ‚Äì Compilers, Lab Section: [011, 012]
 * Assignment: A12, A22, A32.
 * Date: May 01 2024
 * Professor: Paulo Sousa
@@ -62,18 +62,18 @@
  * ............................................................................
  */
 
-/*
-***********************************************************
-* Function name: main
-* Purpose: Main function
-* Author: Paulo Sousa
-* History/Versions: Ver F22
-* Called functions: mainReader(), mainScanner(), mainParser()
-* Parameters: Command line arguments - argc, argv
-* Return value: Status
-* Algorithm: -
-*************************************************************
-*/
+ /*
+ ***********************************************************
+ * Function name: main
+ * Purpose: Main function
+ * Author: Paulo Sousa
+ * History/Versions: Ver F22
+ * Called functions: mainReader(), mainScanner(), mainParser()
+ * Parameters: Command line arguments - argc, argv
+ * Return value: Status
+ * Algorithm: -
+ *************************************************************
+ */
 
 corex_intg main(int argc, char** argv) {
 	corex_intg i;
@@ -100,7 +100,7 @@ corex_intg main(int argc, char** argv) {
 		printf("%s%c%s", "\n[Option '", PGM_SCANNER, "': Starting SCANNER .....]\n\n");
 		//mainScanner(argc, argv);
 		break;
-		
+
 	case PGM_PARSER:
 		printf("%s%c%s", "\n[Option '", PGM_PARSER, "': Starting PARSER .....]\n\n");
 		//mainParser(argc, argv);
