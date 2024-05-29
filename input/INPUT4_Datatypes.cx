@@ -1,7 +1,0 @@
-#
-CoreX Example
-The program is lexically correct about the COREX Datatypes 
-
-x <- 4; #integer
-y <- 5.4; #float
-z <- "CoreX"; #string

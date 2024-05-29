@@ -1,8 +1,0 @@
-# CoreX Example 3:
-  Volume of a sphere #
-
-pi <- 3.14
-input = readline();
-input = as.integer(input);
-Vol <- 4 / 3 * pi * (r^3);
-print(Vol);
