@@ -6,29 +6,25 @@
 * Professors: Paulo Sousa
 ************************************************************
 #
-# ECHO "=---------------------------------------="
-# ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
-# ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
-# ECHO "    @@      @& @   @ @       @     @@    ”
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
-# ECHO "    @@      & @ @  @@              @@    ”
-# ECHO "    @@       @/ @*@ @ @   @        @@    ”
-# ECHO "    @@           @@@@  @@ @ @      @@    ”
-# ECHO "    @@            /@@    @@@ @     @@    ”
-# ECHO "    @@     @      / /     @@ @     @@    ”
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@         S O F I A           @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "                                         "
-# ECHO "[READER SCRIPT .........................]"
-# ECHO "                                         "
+ECHO "=---------------------------------------="
+ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
+ECHO "=---------------------------------------="
+ECHO "        @ @               @ @        "
+ECHO "          @               @          "
+ECHO "           @             @           "
+ECHO "            @           @            "
+ECHO "             @    C    @             "
+ECHO "              @   O   @              "
+ECHO "              @   R   @              "
+ECHO "             @    E    @             "
+ECHO "            @           @            "
+ECHO "           @             @           "
+ECHO "          @               @          "
+ECHO "        @ @               @ @        "
+ECHO "                                     "
+ECHO "     Yen Huynh & Mohammed Muhsin     "
+ECHO "[READER SCRIPT .........................]"
+#
 */
 
 /*
@@ -132,7 +128,7 @@ corex_intg main(int argc, char** argv) {
 /* TO_DO: Update your logo with your own language message */
 
 corex_void printLogo() {
-	printf("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s",
+	printf("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s",
 		"\t=---------------------------------------=\n",
 		"\t|  COMPILERS - ALGONQUIN COLLEGE (S24)  |\n",
 		"\t=---------------------------------------=\n",

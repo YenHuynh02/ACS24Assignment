@@ -1,28 +1,25 @@
 ﻿#
 # CMakeList.txt : CMake project for Compilers, include source and define project specific logic here.
 #
-# ECHO "=---------------------------------------="
-# ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
-# ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
-# ECHO "    @@      @& @   @ @       @     @@    ”
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
-# ECHO "    @@      & @ @  @@              @@    ”
-# ECHO "    @@       @/ @*@ @ @   @        @@    ”
-# ECHO "    @@           @@@@  @@ @ @      @@    ”
-# ECHO "    @@            /@@    @@@ @     @@    ”
-# ECHO "    @@     @      / /     @@ @     @@    ”
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@         S O F I A           @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "                                         "
-# ECHO "[READER SCRIPT .........................]"
+#
+#ECHO "=---------------------------------------="
+#ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
+#ECHO "=---------------------------------------="
+#ECHO "        @ @               @ @        "
+#ECHO "          @               @          "
+#ECHO "           @             @           "
+#ECHO "            @           @            "
+#ECHO "             @    C    @             "
+#ECHO "              @   O   @              "
+#ECHO "              @   R   @              "
+#ECHO "             @    E    @             "
+#ECHO "            @           @            "
+#ECHO "           @             @           "
+#ECHO "          @               @          "
+#ECHO "        @ @               @ @        "
+#ECHO "                                     "
+#ECHO "     Yen Huynh & Mohammed Muhsin     "
+#ECHO "[READER SCRIPT .........................]"     
 # ECHO "                                         "
 
 cmake_minimum_required (VERSION 3.8)

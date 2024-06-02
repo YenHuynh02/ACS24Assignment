@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Summer, 2024
@@ -6,36 +6,32 @@
 * Professors: Paulo Sousa
 ************************************************************
 #
-# ECHO "=---------------------------------------="
-# ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
-# ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
-# ECHO "    @@      @& @   @ @       @     @@    ”
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
-# ECHO "    @@      & @ @  @@              @@    ”
-# ECHO "    @@       @/ @*@ @ @   @        @@    ”
-# ECHO "    @@           @@@@  @@ @ @      @@    ”
-# ECHO "    @@            /@@    @@@ @     @@    ”
-# ECHO "    @@     @      / /     @@ @     @@    ”
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@         S O F I A           @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "                                         "
-# ECHO "[READER SCRIPT .........................]"
-# ECHO "                                         "
+ECHO "=---------------------------------------="
+ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
+ECHO "=---------------------------------------="
+ECHO "        @ @               @ @        "
+ECHO "          @               @          "
+ECHO "           @             @           "
+ECHO "            @           @            "
+ECHO "             @    C    @             "
+ECHO "              @   O   @              "
+ECHO "              @   R   @              "
+ECHO "             @    E    @             "
+ECHO "            @           @            "
+ECHO "           @             @           "
+ECHO "          @               @          "
+ECHO "        @ @               @ @        "
+ECHO "                                     "
+ECHO "     Yen Huynh & Mohammed Muhsin     "
+ECHO "[READER SCRIPT .........................]"             
+#
 */
 
 /*
 ************************************************************
 * File name: Compilers.h
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012]
+* Course: CST 8152 â€“ Compilers, Lab Section: [011, 012]
 * Assignment: A12, A22, A32.
 * Date: May 01 2024
 * Professor: Paulo Sousa
@@ -58,9 +54,9 @@
  * ............................................................................
  */
 
-/* TO_DO: Adjust your language (cannot be "Sofia") */
+ /* TO_DO: Adjust your language (cannot be "Sofia") */
 
-/* Language name */
+ /* Language name */
 #define STR_LANGNAME	"CoreX"
 
 /* Logical constants - adapt for your language */
@@ -78,7 +74,7 @@ NOTE: Some types may not be directly used by your language,
 
 /* TO_DO: Define your typedefs */
 typedef char			corex_char;
-typedef char*			corex_string;
+typedef char* corex_string;
 typedef int				corex_intg;
 typedef float			corex_real;
 typedef void			corex_void;
@@ -98,9 +94,9 @@ Programs:
 ------------------------------------------------------------
 */
 enum PROGRAMS {
-	PGM_READER	= 'r',
+	PGM_READER = 'r',
 	PGM_SCANNER = 's',
-	PGM_PARSER	= 'p'
+	PGM_PARSER = 'p'
 };
 
 /*
@@ -111,7 +107,7 @@ Main functions signatures
 */
 corex_intg mainReader(corex_intg argc, corex_string* argv);
 
-/* 
+/*
 TO_DO: Include later mainScaner (A22) and mainParser (A32)
 */
 //corex_void mainScanner(corex_intg argc, corex_string* argv);

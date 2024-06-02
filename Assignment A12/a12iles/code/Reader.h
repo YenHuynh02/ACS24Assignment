@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Summer, 2024
@@ -6,36 +6,32 @@
 * Professors: Paulo Sousa
 ************************************************************
 #
-# ECHO "=---------------------------------------="
-# ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
-# ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
-# ECHO "    @@      @& @   @ @       @     @@    ”
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
-# ECHO "    @@      & @ @  @@              @@    ”
-# ECHO "    @@       @/ @*@ @ @   @        @@    ”
-# ECHO "    @@           @@@@  @@ @ @      @@    ”
-# ECHO "    @@            /@@    @@@ @     @@    ”
-# ECHO "    @@     @      / /     @@ @     @@    ”
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@         S O F I A           @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "                                         "
-# ECHO "[READER SCRIPT .........................]"
-# ECHO "                                         "
+ECHO "=---------------------------------------="
+ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
+ECHO "=---------------------------------------="
+ECHO "        @ @               @ @        "
+ECHO "          @               @          "
+ECHO "           @             @           "
+ECHO "            @           @            "
+ECHO "             @    C    @             "
+ECHO "              @   O   @              "
+ECHO "              @   R   @              "
+ECHO "             @    E    @             "
+ECHO "            @           @            "
+ECHO "           @             @           "
+ECHO "          @               @          "
+ECHO "        @ @               @ @        "
+ECHO "                                     "
+ECHO "     Yen Huynh & Mohammed Muhsin     "
+ECHO "[READER SCRIPT .........................]"               "
+#                                         "
 */
 
 /*
 ************************************************************
 * File name: Reader.h
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012]
+* Course: CST 8152 â€“ Compilers, Lab Section: [011, 012]
 * Assignment: A12.
 * Date: May 01 2024
 * Professor: Paulo Sousa
@@ -57,11 +53,11 @@
 #ifndef READER_H_
 #define READER_H_
 
-/* TIP: Do not change pragmas, unless necessary .......................................*/
-/*#pragma warning(1:4001) *//*to enforce C89 type comments  - to make //comments an warning */
-/*#pragma warning(error:4001)*//* to enforce C89 comments - to make // comments an error */
+ /* TIP: Do not change pragmas, unless necessary .......................................*/
+ /*#pragma warning(1:4001) *//*to enforce C89 type comments  - to make //comments an warning */
+ /*#pragma warning(error:4001)*//* to enforce C89 comments - to make // comments an error */
 
-/* standard header files */
+ /* standard header files */
 #include <stdio.h>  /* standard input/output */
 #include <malloc.h> /* for dynamic memory allocation*/
 #include <limits.h> /* implementation-defined data type ranges and limits */
@@ -125,34 +121,34 @@ typedef struct bufferReader {
 	Position		position;				/* Offset / position field */
 	corex_intg		histogram[NCHAR];	/* Statistics of chars */
 	corex_intg		numReaderErrors;	/* Number of errors from Reader */
-} Buffer, *BufferPointer;
+} Buffer, * BufferPointer;
 
 /* FUNCTIONS DECLARATION:  .................................. */
 /* General Operations */
-BufferPointer	readerCreate		(corex_intg, corex_intg, corex_intg);
-BufferPointer	readerAddChar		(BufferPointer const, corex_char);
-corex_boln		readerClear		    (BufferPointer const);
-corex_boln		readerFree		    (BufferPointer const);
-corex_boln		readerIsFull		(BufferPointer const);
-corex_boln		readerIsEmpty		(BufferPointer const);
-corex_boln		readerSetMark		(BufferPointer const, corex_intg);
-corex_intg		readerPrint		    (BufferPointer const);
-corex_intg		readerLoad			(BufferPointer const, FILE* const);
-corex_boln		readerRecover		(BufferPointer const);
-corex_boln		readerRetract		(BufferPointer const);
-corex_boln		readerRestore		(BufferPointer const);
-corex_void		readerChecksum		(BufferPointer const);
+BufferPointer	readerCreate(corex_intg, corex_intg, corex_intg);
+BufferPointer	readerAddChar(BufferPointer const, corex_char);
+corex_boln		readerClear(BufferPointer const);
+corex_boln		readerFree(BufferPointer const);
+corex_boln		readerIsFull(BufferPointer const);
+corex_boln		readerIsEmpty(BufferPointer const);
+corex_boln		readerSetMark(BufferPointer const, corex_intg);
+corex_intg		readerPrint(BufferPointer const);
+corex_intg		readerLoad(BufferPointer const, FILE* const);
+corex_boln		readerRecover(BufferPointer const);
+corex_boln		readerRetract(BufferPointer const);
+corex_boln		readerRestore(BufferPointer const);
+corex_void		readerChecksum(BufferPointer const);
 /* Getters */
-corex_char		readerGetChar		(BufferPointer const);
-corex_string	readerGetContent	(BufferPointer const, corex_intg);
-corex_intg		readerGetPosRead	(BufferPointer const);
-corex_intg		readerGetPosWrte	(BufferPointer const);
-corex_intg		readerGetPosMark	(BufferPointer const);
-corex_intg		readerGetSize		(BufferPointer const);
-corex_intg		readerGetInc		(BufferPointer const);
-corex_intg		readerGetMode		(BufferPointer const);
-corex_byte		readerGetFlags		(BufferPointer const);
-corex_void		readerPrintStat		(BufferPointer const);
-corex_intg		readerNumErrors		(BufferPointer const);
+corex_char		readerGetChar(BufferPointer const);
+corex_string	readerGetContent(BufferPointer const, corex_intg);
+corex_intg		readerGetPosRead(BufferPointer const);
+corex_intg		readerGetPosWrte(BufferPointer const);
+corex_intg		readerGetPosMark(BufferPointer const);
+corex_intg		readerGetSize(BufferPointer const);
+corex_intg		readerGetInc(BufferPointer const);
+corex_intg		readerGetMode(BufferPointer const);
+corex_byte		readerGetFlags(BufferPointer const);
+corex_void		readerPrintStat(BufferPointer const);
+corex_intg		readerNumErrors(BufferPointer const);
 
 #endif
