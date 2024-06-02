@@ -6,28 +6,24 @@
 * Professors: Paulo Sousa
 ************************************************************
 #
-# ECHO "=---------------------------------------="
-# ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
-# ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
-# ECHO "    @@      @& @   @ @       @     @@    ”
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
-# ECHO "    @@      & @ @  @@              @@    ”
-# ECHO "    @@       @/ @*@ @ @   @        @@    ”
-# ECHO "    @@           @@@@  @@ @ @      @@    ”
-# ECHO "    @@            /@@    @@@ @     @@    ”
-# ECHO "    @@     @      / /     @@ @     @@    ”
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@         S O F I A           @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "                                         "
-# ECHO "[READER SCRIPT .........................]"
+ECHO "=---------------------------------------="
+ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
+ECHO "=---------------------------------------="
+ECHO "        @ @               @ @        "
+ECHO "          @               @          "
+ECHO "           @             @           "
+ECHO "            @           @            "
+ECHO "             @    C    @             "
+ECHO "              @   O   @              "
+ECHO "              @   R   @              "
+ECHO "             @    E    @             "
+ECHO "            @           @            "
+ECHO "           @             @           "
+ECHO "          @               @          "
+ECHO "        @ @               @ @        "
+ECHO "                                     "
+ECHO "     Yen Huynh & Mohammed Muhsin     "
+ECHO "[READER SCRIPT .........................]"
 # ECHO "                                         "
 */
 
@@ -110,16 +106,16 @@ BufferPointer readerCreate(corex_intg size, corex_intg increment, corex_intg mod
 	else
 		readerPointer->increment = READER_DEFAULT_INCREMENT;
 	if (mode == MODE_ADDIT || mode == MODE_FIXED || mode == MODE_MULTI)
-		readerPointer->increment = increment;
+		readerPointer->mode = mode;
 	else
-		readerPointer->increment = MODE_FIXED;
+		readerPointer->mode = MODE_FIXED;
 	/* TO_DO: Initialize flags */
 	readerPointer->flags = READER_DEFAULT_FLAG;
 	/* TO_DO: The created flag must be signalized as EMP */
 	readerPointer->flags = READER_DEFAULT_FLAG | EMP;
 	/* NEW: Cleaning the content */
 	if (readerPointer->content)
-		readerPointer->content[0] = READER_TERMINATOR;
+		readerPointer->content[0] = 0;
 	readerPointer->position.wrte = 0;
 	readerPointer->position.mark = 0;
 	readerPointer->position.read = 0;
@@ -150,6 +146,8 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, corex_char ch) {
 	if (readerPointer == NULL) {
 		return NULL;
 	}
+	if (ch < 0 || ch >= NCHAR)
+		readerPointer->numReaderErrors++;
 	/* TO_DO: Reset Realocation */
 	readerPointer->flags &= ~REL;
 	/* TO_DO: Test the inclusion of chars */
@@ -184,11 +182,22 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, corex_char ch) {
 		/* TO_DO: New reader allocation */
 		tempReader = (corex_string)realloc(readerPointer->content, newSize * sizeof(corex_char));
 		/* TO_DO: Defensive programming */
+		if (!tempReader) {
+			readerPointer->flags |= REL;
+			return NULL;
+		}
 		/* TO_DO: Check Relocation */
+		if (tempReader != readerPointer->content) {
+			readerPointer->content = tempReader;
+			readerPointer->flags |= REL;
+		}
+		readerPointer->size = newSize;
 	}
 	/* TO_DO: Add the char */
 	readerPointer->content[readerPointer->position.wrte++] = ch;
+	readerPointer->histogram[ch]++;
 	/* TO_DO: Updates histogram */
+	readerPointer->flags &= ~EMP;
 	return readerPointer;
 }
 
@@ -208,7 +217,11 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, corex_char ch) {
 */
 corex_boln readerClear(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return COREX_FALSE;
+	}
 	/* TO_DO: Adjust flags original */
+	readerPointer->flags = READER_DEFAULT_FLAG;
 	readerPointer->position.wrte = readerPointer->position.mark = readerPointer->position.read = 0;
 	return COREX_TRUE;
 }
@@ -229,7 +242,14 @@ corex_boln readerClear(BufferPointer const readerPointer) {
 */
 corex_boln readerFree(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return COREX_FALSE;
+	}
 	/* TO_DO: Free pointers */
+	if (readerPointer->content) {
+		free(readerPointer->content);
+	}
+	free(readerPointer);
 	return COREX_TRUE;
 }
 
@@ -249,8 +269,11 @@ corex_boln readerFree(BufferPointer const readerPointer) {
 */
 corex_boln readerIsFull(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return COREX_FALSE;
+	}
 	/* TO_DO: Check flag if buffer is FUL */
-	return COREX_FALSE;
+	return (readerPointer->flags & FUL) ? COREX_TRUE : COREX_FALSE;
 }
 
 
@@ -270,8 +293,11 @@ corex_boln readerIsFull(BufferPointer const readerPointer) {
 */
 corex_boln readerIsEmpty(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return COREX_FALSE;
+	}
 	/* TO_DO: Check flag if buffer is EMP */
-	return COREX_FALSE;
+	return (readerPointer->flags & EMP) ? COREX_TRUE : COREX_FALSE;
 }
 
 /*
@@ -292,6 +318,9 @@ corex_boln readerIsEmpty(BufferPointer const readerPointer) {
 */
 corex_boln readerSetMark(BufferPointer const readerPointer, corex_intg mark) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return COREX_FALSE;
+	}
 	/* TO_DO: Adjust mark */
 	readerPointer->position.mark = mark;
 	return COREX_TRUE;
@@ -346,6 +375,9 @@ corex_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescrip
 	corex_intg size = 0;
 	corex_char c;
 	/* TO_DO: Defensive programming */
+	if (!readerPointer || !fileDescriptor) {
+		return READER_ERROR;
+	}
 	c = (corex_char)fgetc(fileDescriptor);
 	while (!feof(fileDescriptor)) {
 		if (!readerAddChar(readerPointer, c)) {
@@ -356,6 +388,7 @@ corex_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescrip
 		size++;
 	}
 	/* TO_DO: Defensive programming */
+
 	return size;
 }
 
@@ -377,10 +410,11 @@ corex_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescrip
 corex_boln readerRecover(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (readerPointer == NULL) {
-		return;
+		return COREX_FALSE;
 	}
 	/* TO_DO: Recover positions */
 	readerPointer->position.read = 0;
+	readerPointer->position.mark = 0;
 	return COREX_TRUE;
 }
 
@@ -401,8 +435,15 @@ corex_boln readerRecover(BufferPointer const readerPointer) {
 */
 corex_boln readerRetract(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return COREX_FALSE;
+	}
 	/* TO_DO: Retract (return 1 pos read) */
-	return COREX_TRUE;
+	if (readerPointer->position.read > 0) {
+		readerPointer->position.read--;
+		return COREX_TRUE;
+	}
+	return COREX_FALSE;
 }
 
 
@@ -422,6 +463,9 @@ corex_boln readerRetract(BufferPointer const readerPointer) {
 */
 corex_boln readerRestore(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
+		return COREX_FALSE;
+	}
 	/* TO_DO: Restore positions (read/mark) */
 	readerPointer->position.read = readerPointer->position.mark;
 	return COREX_TRUE;
@@ -444,6 +488,8 @@ corex_boln readerRestore(BufferPointer const readerPointer) {
 */
 corex_char readerGetChar(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (!readerPointer)
+		return READER_ERROR;
 	/* TO_DO: Check condition to read/wrte */
 	/* TO_DO: Set EOB flag */
 	/* TO_DO: Reset EOB flag */
@@ -471,7 +517,7 @@ corex_char readerGetChar(BufferPointer const readerPointer) {
 corex_string readerGetContent(BufferPointer const readerPointer, corex_intg pos) {
 	/* TO_DO: Defensive programming */
 	if (readerPointer == NULL) {
-		return READER_ERROR;
+		return NULL;
 	}
 	/* TO_DO: Return content (string) */
 	return readerPointer->content + pos;
@@ -657,11 +703,12 @@ corex_byte readerGetFlags(BufferPointer const readerPointer) {
 corex_void readerPrintStat(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (readerPointer == NULL) {
-		return READER_ERROR;
+		return;
 	}
 	/* TO_DO: Print the histogram */
 	for (int i = 0; i < NCHAR; i++) {
-		printf("B[ ] = %d, ", readerPointer->histogram[i]);
+		if (readerPointer->histogram[i]>0)
+		printf("B[%c] = %d, ", i, readerPointer->histogram[i]);
 	}
 	printf("\n");
 }
@@ -681,7 +728,7 @@ corex_void readerPrintStat(BufferPointer const readerPointer) {
 */
 corex_intg readerNumErrors(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (readerPointer == NULL || readerPointer < 0 || readerPointer > NCHAR) {
+	if (readerPointer == NULL) {
 		return READER_ERROR;
 	}
 	/* TO_DO: Returns the number of errors */
@@ -704,10 +751,13 @@ corex_intg readerNumErrors(BufferPointer const readerPointer) {
 */
 
 corex_void readerChecksum(BufferPointer readerPointer) {
-	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer || readerPointer->content == NULL) {
 		return;
 	}
-	/* TO_DO: Adjust the checksum to flags */
+	if (readerPointer->position.wrte < 2) {
+		return;
+	}
+
+	/* Calculate the initial checksum based on the first two characters */
 	return;
 }
