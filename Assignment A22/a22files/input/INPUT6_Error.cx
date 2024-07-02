@@ -1,0 +1,13 @@
+# CoreX Example 2:
+  The program is "lexically" correct
+  and should not generate any error #
+
+tryCatch(
+	error = functione(e) {
+		print("Error! Cannot compile.")
+	},
+
+	warning = function(w) {
+		print("Warning! Please recheck the code.")
+	}
+)
