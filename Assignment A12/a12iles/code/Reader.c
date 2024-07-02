@@ -1,4 +1,4 @@
-﻿/*
+/*
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Summer, 2024
@@ -6,24 +6,28 @@
 * Professors: Paulo Sousa
 ************************************************************
 #
-ECHO "=---------------------------------------="
-ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
-ECHO "=---------------------------------------="
-ECHO "        @ @               @ @        "
-ECHO "          @               @          "
-ECHO "           @             @           "
-ECHO "            @           @            "
-ECHO "             @    C    @             "
-ECHO "              @   O   @              "
-ECHO "              @   R   @              "
-ECHO "             @    E    @             "
-ECHO "            @           @            "
-ECHO "           @             @           "
-ECHO "          @               @          "
-ECHO "        @ @               @ @        "
-ECHO "                                     "
-ECHO "     Yen Huynh & Mohammed Muhsin     "
-ECHO "[READER SCRIPT .........................]"
+# ECHO "=---------------------------------------="
+# ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
+# ECHO "=---------------------------------------="
+# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
+# ECHO "    @@                             @@    ”
+# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
+# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
+# ECHO "    @@      @& @   @ @       @     @@    ”
+# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
+# ECHO "    @@      & @ @  @@              @@    ”
+# ECHO "    @@       @/ @*@ @ @   @        @@    ”
+# ECHO "    @@           @@@@  @@ @ @      @@    ”
+# ECHO "    @@            /@@    @@@ @     @@    ”
+# ECHO "    @@     @      / /     @@ @     @@    ”
+# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
+# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
+# ECHO "    @@                             @@    ”
+# ECHO "    @@         S O F I A           @@    ”
+# ECHO "    @@                             @@    ”
+# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
+# ECHO "                                         "
+# ECHO "[READER SCRIPT .........................]"
 # ECHO "                                         "
 */
 
@@ -182,22 +186,12 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, corex_char ch) {
 		/* TO_DO: New reader allocation */
 		tempReader = (corex_string)realloc(readerPointer->content, newSize * sizeof(corex_char));
 		/* TO_DO: Defensive programming */
-		if (!tempReader) {
-			readerPointer->flags |= REL;
-			return NULL;
-		}
 		/* TO_DO: Check Relocation */
-		if (tempReader != readerPointer->content) {
-			readerPointer->content = tempReader;
-			readerPointer->flags |= REL;
-		}
-		readerPointer->size = newSize;
 	}
 	/* TO_DO: Add the char */
 	readerPointer->content[readerPointer->position.wrte++] = ch;
 	readerPointer->histogram[ch]++;
 	/* TO_DO: Updates histogram */
-	readerPointer->flags &= ~EMP;
 	return readerPointer;
 }
 
@@ -217,11 +211,7 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, corex_char ch) {
 */
 corex_boln readerClear(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
-		return COREX_FALSE;
-	}
 	/* TO_DO: Adjust flags original */
-	readerPointer->flags = READER_DEFAULT_FLAG;
 	readerPointer->position.wrte = readerPointer->position.mark = readerPointer->position.read = 0;
 	return COREX_TRUE;
 }
@@ -242,14 +232,7 @@ corex_boln readerClear(BufferPointer const readerPointer) {
 */
 corex_boln readerFree(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
-		return COREX_FALSE;
-	}
 	/* TO_DO: Free pointers */
-	if (readerPointer->content) {
-		free(readerPointer->content);
-	}
-	free(readerPointer);
 	return COREX_TRUE;
 }
 
@@ -269,11 +252,8 @@ corex_boln readerFree(BufferPointer const readerPointer) {
 */
 corex_boln readerIsFull(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
-		return COREX_FALSE;
-	}
 	/* TO_DO: Check flag if buffer is FUL */
-	return (readerPointer->flags & FUL) ? COREX_TRUE : COREX_FALSE;
+	return COREX_FALSE;
 }
 
 
@@ -293,11 +273,8 @@ corex_boln readerIsFull(BufferPointer const readerPointer) {
 */
 corex_boln readerIsEmpty(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
-		return COREX_FALSE;
-	}
 	/* TO_DO: Check flag if buffer is EMP */
-	return (readerPointer->flags & EMP) ? COREX_TRUE : COREX_FALSE;
+	return COREX_FALSE;
 }
 
 /*
@@ -318,9 +295,6 @@ corex_boln readerIsEmpty(BufferPointer const readerPointer) {
 */
 corex_boln readerSetMark(BufferPointer const readerPointer, corex_intg mark) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
-		return COREX_FALSE;
-	}
 	/* TO_DO: Adjust mark */
 	readerPointer->position.mark = mark;
 	return COREX_TRUE;
@@ -375,9 +349,6 @@ corex_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescrip
 	corex_intg size = 0;
 	corex_char c;
 	/* TO_DO: Defensive programming */
-	if (!readerPointer || !fileDescriptor) {
-		return READER_ERROR;
-	}
 	c = (corex_char)fgetc(fileDescriptor);
 	while (!feof(fileDescriptor)) {
 		if (!readerAddChar(readerPointer, c)) {
@@ -388,7 +359,6 @@ corex_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescrip
 		size++;
 	}
 	/* TO_DO: Defensive programming */
-
 	return size;
 }
 
@@ -414,7 +384,6 @@ corex_boln readerRecover(BufferPointer const readerPointer) {
 	}
 	/* TO_DO: Recover positions */
 	readerPointer->position.read = 0;
-	readerPointer->position.mark = 0;
 	return COREX_TRUE;
 }
 
@@ -435,15 +404,8 @@ corex_boln readerRecover(BufferPointer const readerPointer) {
 */
 corex_boln readerRetract(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
-		return COREX_FALSE;
-	}
 	/* TO_DO: Retract (return 1 pos read) */
-	if (readerPointer->position.read > 0) {
-		readerPointer->position.read--;
-		return COREX_TRUE;
-	}
-	return COREX_FALSE;
+	return COREX_TRUE;
 }
 
 
@@ -463,9 +425,6 @@ corex_boln readerRetract(BufferPointer const readerPointer) {
 */
 corex_boln readerRestore(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
-		return COREX_FALSE;
-	}
 	/* TO_DO: Restore positions (read/mark) */
 	readerPointer->position.read = readerPointer->position.mark;
 	return COREX_TRUE;
@@ -517,7 +476,7 @@ corex_char readerGetChar(BufferPointer const readerPointer) {
 corex_string readerGetContent(BufferPointer const readerPointer, corex_intg pos) {
 	/* TO_DO: Defensive programming */
 	if (readerPointer == NULL) {
-		return NULL;
+		return READER_ERROR;
 	}
 	/* TO_DO: Return content (string) */
 	return readerPointer->content + pos;
@@ -703,7 +662,7 @@ corex_byte readerGetFlags(BufferPointer const readerPointer) {
 corex_void readerPrintStat(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (readerPointer == NULL) {
-		return;
+		return READER_ERROR;
 	}
 	/* TO_DO: Print the histogram */
 	for (int i = 0; i < NCHAR; i++) {
@@ -751,13 +710,10 @@ corex_intg readerNumErrors(BufferPointer const readerPointer) {
 */
 
 corex_void readerChecksum(BufferPointer readerPointer) {
-	if (!readerPointer || readerPointer->content == NULL) {
+	/* TO_DO: Defensive programming */
+	if (!readerPointer) {
 		return;
 	}
-	if (readerPointer->position.wrte < 2) {
-		return;
-	}
-
-	/* Calculate the initial checksum based on the first two characters */
+	/* TO_DO: Adjust the checksum to flags */
 	return;
 }
