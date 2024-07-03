@@ -31,7 +31,7 @@ ECHO "[READER SCRIPT .........................]"
 ************************************************************
 * File name: Scanner.c
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012]
+* Course: CST 8152 â€“ Compilers, Lab Section: [011, 012]
 * Assignment: A22, A32.
 * Date: May 01 2024
 * Purpose: This file contains all functionalities from Scanner.
@@ -55,7 +55,7 @@ ECHO "[READER SCRIPT .........................]"
 #include <limits.h>  /* integer types constants */
 #include <float.h>   /* floating-point types constants */
 
-/* #define NDEBUG to suppress assert() call */
+  /* #define NDEBUG to suppress assert() call */
 #include <assert.h>  /* assert() prototype */
 
 /* project header files */
@@ -81,13 +81,13 @@ TO_DO: Global vars definitions
 /* Global objects - variables */
 /* This buffer is used as a repository for string literals. */
 extern BufferPointer stringLiteralTable;	/* String literal table */
-sofia_intg line;								/* Current line number of the source code */
-extern sofia_intg errorNumber;				/* Defined in platy_st.c - run-time error number */
+corex_intg line;								/* Current line number of the source code */
+extern corex_intg errorNumber;				/* Defined in platy_st.c - run-time error number */
 
-extern sofia_intg stateType[NUM_STATES];
-extern sofia_string keywordTable[KWT_SIZE];
+extern corex_intg stateType[NUM_STATES];
+extern corex_string keywordTable[KWT_SIZE];
 extern PTR_ACCFUN finalStateTable[NUM_STATES];
-extern sofia_intg transitionTable[NUM_STATES][CHAR_CLASSES];
+extern corex_intg transitionTable[NUM_STATES][CHAR_CLASSES];
 
 /* Local(file) global objects - variables */
 static BufferPointer lexemeBuffer;			/* Pointer to temporary lexeme buffer */
@@ -101,9 +101,9 @@ static BufferPointer sourceBuffer;			/* Pointer to input source buffer */
  */
  /* TO_DO: Follow the standard and adjust datatypes */
 
-sofia_intg startScanner(BufferPointer psc_buf) {
+corex_intg startScanner(BufferPointer psc_buf) {
 	/* TO_DO: Start histogram */
-	for (sofia_intg i=0; i<NUM_TOKENS;i++)
+	for (corex_intg i = 0; i < NUM_TOKENS; i++)
 		scData.scanHistogram[i] = 0;
 	/* Basic scanner initialization */
 	/* in case the buffer has been read previously  */
@@ -120,24 +120,24 @@ sofia_intg startScanner(BufferPointer psc_buf) {
  *		Main function of buffer, responsible to classify a char (or sequence
  *		of chars). In the first part, a specific sequence is detected (reading
  *		from buffer). In the second part, a pattern (defined by Regular Expression)
- *		is recognized and the appropriate function is called (related to final states 
+ *		is recognized and the appropriate function is called (related to final states
  *		in the Transition Diagram).
  ***********************************************************
  */
 
-Token tokenizer(sofia_void) {
+Token tokenizer(corex_void) {
 
 	/* TO_DO: Follow the standard and adjust datatypes */
 
 	Token currentToken = { 0 }; /* token to return after pattern recognition. Set all structure members to 0 */
-	sofia_char c;	/* input symbol */
-	sofia_intg state = 0;		/* initial state of the FSM */
-	sofia_intg lexStart;		/* start offset of a lexeme in the input char buffer (array) */
-	sofia_intg lexEnd;		/* end offset of a lexeme in the input char buffer (array)*/
+	corex_char c;	/* input symbol */
+	corex_intg state = 0;		/* initial state of the FSM */
+	corex_intg lexStart;		/* start offset of a lexeme in the input char buffer (array) */
+	corex_intg lexEnd;		/* end offset of a lexeme in the input char buffer (array)*/
 
-	sofia_intg lexLength;		/* token length */
-	sofia_intg i;				/* counter */
-	///sofia_char newc;			// new char
+	corex_intg lexLength;		/* token length */
+	corex_intg i;				/* counter */
+	///corex_char newc;			// new char
 
 	while (1) { /* endless loop broken by token returns it will generate a warning */
 		c = readerGetChar(sourceBuffer);
@@ -151,7 +151,7 @@ Token tokenizer(sofia_void) {
 		/* TO_DO: All patterns that do not require accepting functions */
 		switch (c) {
 
-		/* Cases for spaces */
+			/* Cases for spaces */
 		case ' ':
 		case '\t':
 		case '\f':
@@ -160,11 +160,7 @@ Token tokenizer(sofia_void) {
 			line++;
 			break;
 
-		/* Cases for symbols */
-		case ';':
-			currentToken.code = EOS_T;
-			scData.scanHistogram[currentToken.code]++;
-			return currentToken;
+			/* Cases for symbols */
 		case '(':
 			currentToken.code = LPR_T;
 			scData.scanHistogram[currentToken.code]++;
@@ -181,7 +177,7 @@ Token tokenizer(sofia_void) {
 			currentToken.code = RBR_T;
 			scData.scanHistogram[currentToken.code]++;
 			return currentToken;
-		/* Cases for END OF FILE */
+			/* Cases for END OF FILE */
 		case CHARSEOF0:
 			currentToken.code = SEOF_T;
 			scData.scanHistogram[currentToken.code]++;
@@ -193,13 +189,13 @@ Token tokenizer(sofia_void) {
 			currentToken.attribute.seofType = SEOF_255;
 			return currentToken;
 
-		/* ------------------------------------------------------------------------
-			Part 2: Implementation of Finite State Machine (DFA) or Transition Table driven Scanner
-			Note: Part 2 must follow Part 1 to catch the illegal symbols
-			-----------------------------------------------------------------------
-		*/
+			/* ------------------------------------------------------------------------
+				Part 2: Implementation of Finite State Machine (DFA) or Transition Table driven Scanner
+				Note: Part 2 must follow Part 1 to catch the illegal symbols
+				-----------------------------------------------------------------------
+			*/
 
-		/* TO_DO: Adjust / check the logic for your language */
+			/* TO_DO: Adjust / check the logic for your language */
 
 		default: // general case
 			state = nextState(state, c);
@@ -215,7 +211,7 @@ Token tokenizer(sofia_void) {
 				readerRetract(sourceBuffer);
 			lexEnd = readerGetPosRead(sourceBuffer);
 			lexLength = lexEnd - lexStart;
-			lexemeBuffer = readerCreate((sofia_intg)lexLength + 2, 0, MODE_FIXED);
+			lexemeBuffer = readerCreate((corex_intg)lexLength + 2, 0, MODE_FIXED);
 			if (!lexemeBuffer) {
 				fprintf(stderr, "Scanner error: Can not create buffer\n");
 				exit(1);
@@ -260,9 +256,9 @@ Token tokenizer(sofia_void) {
  */
  /* TO_DO: Just change the datatypes */
 
-sofia_intg nextState(sofia_intg state, sofia_char c) {
-	sofia_intg col;
-	sofia_intg next;
+corex_intg nextState(corex_intg state, corex_char c) {
+	corex_intg col;
+	corex_intg next;
 	col = nextClass(c);
 	next = transitionTable[state][col];
 	if (DEBUG)
@@ -285,14 +281,14 @@ sofia_intg nextState(sofia_intg state, sofia_char c) {
 	* For instance, a letter should return the column for letters, etc.
  ***********************************************************
  */
-/* TO_DO: Use your column configuration */
+ /* TO_DO: Use your column configuration */
 
-/* Adjust the logic to return next column in TT */
-/*    [A-z],[0-9],    _,    &,   \', SEOF,    #, other
-	   L(0), D(1), U(2), M(3), Q(4), E(5), C(6),  O(7) */
+ /* Adjust the logic to return next column in TT */
+ /*    [A-z],[0-9],    _,    &,   \', SEOF,    #, other
+		L(0), D(1), U(2), M(3), Q(4), E(5), C(6),  O(7) */
 
-sofia_intg nextClass(sofia_char c) {
-	sofia_intg val = -1;
+corex_intg nextClass(corex_char c) {
+	corex_intg val = -1;
 	switch (c) {
 	case CHRCOL2:
 		val = 2;
@@ -304,7 +300,10 @@ sofia_intg nextClass(sofia_char c) {
 		val = 4;
 		break;
 	case CHRCOL6:
-		val = 6;
+		val = 3;
+		break;
+	case CHRCOL7:
+		val = 4;
 		break;
 	case CHARSEOF0:
 	case CHARSEOF255:
@@ -329,9 +328,9 @@ sofia_intg nextClass(sofia_char c) {
  */
  /* TO_DO: Adjust the function for IL */
 
-Token funcCMT(sofia_string lexeme) {
+Token funcCMT(corex_string lexeme) {
 	Token currentToken = { 0 };
-	sofia_intg i = 0, len = (sofia_intg)strlen(lexeme);
+	corex_intg i = 0, len = (corex_intg)strlen(lexeme);
 	currentToken.attribute.contentString = readerGetPosWrte(stringLiteralTable);
 	for (i = 1; i < len - 1; i++) {
 		if (lexeme[i] == '\n')
@@ -343,21 +342,21 @@ Token funcCMT(sofia_string lexeme) {
 }
 
 
- /*
-  ************************************************************
-  * Acceptance State Function IL
-  *		Function responsible to identify IL (integer literals).
-  * - It is necessary respect the limit (ex: 2-byte integer in C).
-  * - In the case of larger lexemes, error shoul be returned.
-  * - Only first ERR_LEN characters are accepted and eventually,
-  *   additional three dots (...) should be put in the output.
-  ***********************************************************
-  */
-  /* TO_DO: Adjust the function for IL */
+/*
+ ************************************************************
+ * Acceptance State Function IL
+ *		Function responsible to identify IL (integer literals).
+ * - It is necessary respect the limit (ex: 2-byte integer in C).
+ * - In the case of larger lexemes, error shoul be returned.
+ * - Only first ERR_LEN characters are accepted and eventually,
+ *   additional three dots (...) should be put in the output.
+ ***********************************************************
+ */
+ /* TO_DO: Adjust the function for IL */
 
-Token funcIL(sofia_string lexeme) {
+Token funcIL(corex_string lexeme) {
 	Token currentToken = { 0 };
-	sofia_long tlong;
+	corex_long tlong;
 	if (lexeme[0] != '\0' && strlen(lexeme) > NUM_LEN) {
 		currentToken = (*finalStateTable[ESNR])(lexeme);
 	}
@@ -366,7 +365,7 @@ Token funcIL(sofia_string lexeme) {
 		if (tlong >= 0 && tlong <= SHRT_MAX) {
 			currentToken.code = INL_T;
 			scData.scanHistogram[currentToken.code]++;
-			currentToken.attribute.intValue = (sofia_intg)tlong;
+			currentToken.attribute.intValue = (corex_intg)tlong;
 		}
 		else {
 			currentToken = (*finalStateTable[ESNR])(lexeme);
@@ -390,24 +389,24 @@ Token funcIL(sofia_string lexeme) {
  */
  /* TO_DO: Adjust the function for ID */
 
-Token funcID(sofia_string lexeme) {
+Token funcID(corex_string lexeme) {
 	Token currentToken = { 0 };
 	size_t length = strlen(lexeme);
-	sofia_char lastch = lexeme[length - 1];
-	sofia_intg isID = SOFIA_FALSE;
+	corex_char lastch = lexeme[length - 1];
+	corex_intg isID = COREX_FALSE;
 	switch (lastch) {
-		case MNID_SUF:
-			currentToken.code = MNID_T;
-			scData.scanHistogram[currentToken.code]++;
-			isID = SOFIA_TRUE;
-			break;
-		default:
-			// Test Keyword
-			lexeme[length - 1] = '\0';
-			currentToken = funcKEY(lexeme);
-			break;
+	case MNID_SUF:
+		currentToken.code = MNID_T;
+		scData.scanHistogram[currentToken.code]++;
+		isID = COREX_TRUE;
+		break;
+	default:
+		// Test Keyword
+		lexeme[length - 1] = '\0';
+		currentToken = funcKEY(lexeme);
+		break;
 	}
-	if (isID == SOFIA_TRUE) {
+	if (isID == COREX_TRUE) {
 		strncpy(currentToken.attribute.idLexeme, lexeme, VID_LEN);
 		currentToken.attribute.idLexeme[VID_LEN] = CHARSEOF0;
 	}
@@ -419,17 +418,17 @@ Token funcID(sofia_string lexeme) {
 ************************************************************
  * Acceptance State Function SL
  *		Function responsible to identify SL (string literals).
- * - The lexeme must be stored in the String Literal Table 
- *   (stringLiteralTable). You need to include the literals in 
+ * - The lexeme must be stored in the String Literal Table
+ *   (stringLiteralTable). You need to include the literals in
  *   this structure, using offsets. Remember to include \0 to
  *   separate the lexemes. Remember also to incremente the line.
  ***********************************************************
  */
-/* TO_DO: Adjust the function for SL */
+ /* TO_DO: Adjust the function for SL */
 
-Token funcSL(sofia_string lexeme) {
+Token funcSL(corex_string lexeme) {
 	Token currentToken = { 0 };
-	sofia_intg i = 0, len = (sofia_intg)strlen(lexeme);
+	corex_intg i = 0, len = (corex_intg)strlen(lexeme);
 	currentToken.attribute.contentString = readerGetPosWrte(stringLiteralTable);
 	for (i = 1; i < len - 1; i++) {
 		if (lexeme[i] == '\n')
@@ -463,10 +462,10 @@ Token funcSL(sofia_string lexeme) {
  */
  /* TO_DO: Adjust the function for Keywords */
 
-Token funcKEY(sofia_string lexeme) {
+Token funcKEY(corex_string lexeme) {
 	Token currentToken = { 0 };
-	sofia_intg kwindex = -1, j = 0;
-	sofia_intg len = (sofia_intg)strlen(lexeme);
+	corex_intg kwindex = -1, j = 0;
+	corex_intg len = (corex_intg)strlen(lexeme);
 	lexeme[len - 1] = '\0';
 	for (j = 0; j < KWT_SIZE; j++)
 		if (!strcmp(lexeme, &keywordTable[j][0]))
@@ -495,9 +494,9 @@ Token funcKEY(sofia_string lexeme) {
  */
  /* TO_DO: Adjust the function for Errors */
 
-Token funcErr(sofia_string lexeme) {
+Token funcErr(corex_string lexeme) {
 	Token currentToken = { 0 };
-	sofia_intg i = 0, len = (sofia_intg)strlen(lexeme);
+	corex_intg i = 0, len = (corex_intg)strlen(lexeme);
 	if (len > ERR_LEN) {
 		strncpy(currentToken.attribute.errLexeme, lexeme, ERR_LEN - 3);
 		currentToken.attribute.errLexeme[ERR_LEN - 3] = CHARSEOF0;
@@ -521,8 +520,8 @@ Token funcErr(sofia_string lexeme) {
  ***********************************************************
  */
 
-sofia_void printToken(Token t) {
-	extern sofia_string keywordTable[]; /* link to keyword table in */
+corex_void printToken(Token t) {
+	extern corex_string keywordTable[]; /* link to keyword table in */
 	switch (t.code) {
 	case RTE_T:
 		printf("RTE_T\t\t%s", t.attribute.errLexeme);
@@ -543,8 +542,8 @@ sofia_void printToken(Token t) {
 		printf("MNID_T\t\t%s\n", t.attribute.idLexeme);
 		break;
 	case STR_T:
-		printf("STR_T\t\t%d\t ", (sofia_intg)t.attribute.codeType);
-		printf("%s\n", readerGetContent(stringLiteralTable, (sofia_intg)t.attribute.codeType));
+		printf("STR_T\t\t%d\t ", (corex_intg)t.attribute.codeType);
+		printf("%s\n", readerGetContent(stringLiteralTable, (corex_intg)t.attribute.codeType));
 		break;
 	case LPR_T:
 		printf("LPR_T\n");
@@ -564,9 +563,6 @@ sofia_void printToken(Token t) {
 	case CMT_T:
 		printf("CMT_T\n");
 		break;
-	case EOS_T:
-		printf("EOS_T\n");
-		break;
 	default:
 		printf("Scanner error: invalid token code: %d\n", t.code);
 	}
@@ -581,7 +577,7 @@ sofia_void printToken(Token t) {
  *	- Void (procedure)
  ***********************************************************
  */
-sofia_void printScannerData(ScannerData scData) {
+corex_void printScannerData(ScannerData scData) {
 	/* Print Scanner statistics */
 	printf("Statistics:\n");
 	printf("----------------------------------\n");
