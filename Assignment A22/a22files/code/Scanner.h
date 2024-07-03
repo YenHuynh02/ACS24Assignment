@@ -31,7 +31,7 @@ ECHO "[READER SCRIPT .........................]"
 ************************************************************
 * File name: Scanner.h
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012]
+* Course: CST 8152 â€“ Compilers, Lab Section: [011, 012]
 * Assignment: A22, A32.
 * Date: May 01 2024
 * Purpose: This file is the main header for Scanner (.h)
@@ -85,7 +85,7 @@ enum TOKENS {
 };
 
 /* TO_DO: Define the list of keywords */
-static sofia_string tokenStrTable[NUM_TOKENS] = {
+static corex_string tokenStrTable[NUM_TOKENS] = {
 	"ERR_T",
 	"MNID_T",
 	"INL_T",
@@ -109,39 +109,39 @@ typedef enum SourceEndOfFile { SEOF_0, SEOF_255 } EofOperator;
 
 /* TO_DO: Data structures for declaring the token and its attributes */
 typedef union TokenAttribute {
-	sofia_intg codeType;      /* integer attributes accessor */
+	corex_intg codeType;      /* integer attributes accessor */
 	AriOperator arithmeticOperator;		/* arithmetic operator attribute code */
 	RelOperator relationalOperator;		/* relational operator attribute code */
 	LogOperator logicalOperator;		/* logical operator attribute code */
 	EofOperator seofType;				/* source-end-of-file attribute code */
-	sofia_intg intValue;				/* integer literal attribute (value) */
-	sofia_intg keywordIndex;			/* keyword index in the keyword table */
-	sofia_intg contentString;			/* string literal offset from the beginning of the string literal buffer (stringLiteralTable->content) */
-	sofia_real floatValue;				/* floating-point literal attribute (value) */
-	sofia_char idLexeme[VID_LEN + 1];	/* variable identifier token attribute */
-	sofia_char errLexeme[ERR_LEN + 1];	/* error token attribite */
+	corex_intg intValue;				/* integer literal attribute (value) */
+	corex_intg keywordIndex;			/* keyword index in the keyword table */
+	corex_intg contentString;			/* string literal offset from the beginning of the string literal buffer (stringLiteralTable->content) */
+	corex_real floatValue;				/* floating-point literal attribute (value) */
+	corex_char idLexeme[VID_LEN + 1];	/* variable identifier token attribute */
+	corex_char errLexeme[ERR_LEN + 1];	/* error token attribite */
 } TokenAttribute;
 
 /* TO_DO: Should be used if no symbol table is implemented */
 typedef struct idAttibutes {
-	sofia_byte flags;			/* Flags information */
+	corex_byte flags;			/* Flags information */
 	union {
-		sofia_intg intValue;				/* Integer value */
-		sofia_real floatValue;			/* Float value */
-		sofia_string stringContent;		/* String value */
+		corex_intg intValue;				/* Integer value */
+		corex_real floatValue;			/* Float value */
+		corex_string stringContent;		/* String value */
 	} values;
 } IdAttibutes;
 
 /* Token declaration */
 typedef struct Token {
-	sofia_intg code;				/* token code */
+	corex_intg code;				/* token code */
 	TokenAttribute attribute;	/* token attribute */
 	IdAttibutes   idAttribute;	/* not used in this scanner implementation - for further use */
 } Token;
 
 /* Scanner */
 typedef struct scannerData {
-	sofia_intg scanHistogram[NUM_TOKENS];	/* Statistics of chars */
+	corex_intg scanHistogram[NUM_TOKENS];	/* Statistics of chars */
 } ScannerData, * pScanData;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,8 +153,8 @@ typedef struct scannerData {
 /*  Special case tokens processed separately one by one in the token-driven part of the scanner:
  *  LPR_T, RPR_T, LBR_T, RBR_T, EOS_T, SEOF_T and special chars used for tokenis include _, & and ' */
 
-/* TO_DO: Define lexeme FIXED classes */
-/* These constants will be used on nextClass */
+ /* TO_DO: Define lexeme FIXED classes */
+ /* These constants will be used on nextClass */
 #define CHRCOL2 '_'
 #define CHRCOL3 '&'
 #define CHRCOL4 '\''
@@ -170,23 +170,40 @@ typedef struct scannerData {
 #define FS		10		/* Illegal state */
 
  /* TO_DO: State transition table definition */
-#define NUM_STATES		10
-#define CHAR_CLASSES	8
+#define NUM_STATES		11
+#define CHAR_CLASSES	11
+
+///* TO_DO: Transition table - type of states defined in separate table */
+//static corex_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
+//	/*    [A-z],[0-9],    _,    /,   #,    \n,   * ,   .  ,  '  ,  " , Others
+//		   L(0), D(1), U(2), S(3), H(4), N(5), A(6), P(7), Q(8), R(9), O(10) */
+//		{     7, ESNR, ESNR, ESNR, 1||3, ESNR, ESNR, ESNR,    9, ESNR, ESNR},	// S0
+//		{  ESWR,	7,    7, ESNR,	  4,    1, ESNR, ESNR, ESWR, ESNR, 3   },	// S1
+//		{    FS, ESWR, ESWR, ESNR, ESWR, ESWR, ESNR, ESNR,   FS, ESNR, 4   },	// S2: SLC
+//		{    FS,   FS,   FS,   FS,    5,   FS, ESNR, ESNR,   FS,   FS, ESWR},	// S3
+//		{    FS,   FS,   FS,   FS, ESWR,   FS,	 FS,   FS,   FS,   FS, 5   },	// S4
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, ESWR},	// S5
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, FS  },	// S6: MLC
+//		{     8,    8,    8,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, FS  },	// S7: ASNR (COM)
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS,  9  },	// S8: VID | MID | KEY
+//		{     9,    9,    9,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, ESWR},	// S9 
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, FS  },	// S10: SL
+//};
 
 /* TO_DO: Transition table - type of states defined in separate table */
-static sofia_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
-/*    [A-z],[0-9],    _,    &,   \', SEOF,    #, other
-	   L(0), D(1), U(2), M(3), Q(4), E(5), C(6),  O(7) */
-	{     1, ESNR, ESNR, ESNR,    4, ESWR,	  6, ESNR},	// S0: NOAS
-	{     1,    1,    1,    2,	  3,    3,   3,    3},	// S1: NOAS
-	{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S2: ASNR (MVID)
-	{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S3: ASWR (KEY)
-	{     4,    4,    4,    4,    5, ESWR,	  4,    4},	// S4: NOAS
-	{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S5: ASNR (SL)
-	{     6,    6,    6,    6,    6, ESWR,	  7,    6},	// S6: NOAS
-	{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S7: ASNR (COM)
-	{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S8: ASNR (ES)
-	{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS}  // S9: ASWR (ER)
+static corex_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
+	/*    [A-z],[0-9],    _,    &,   \', SEOF,    #, other
+		   L(0), D(1), U(2), M(3), Q(4), E(5), C(6),  O(7) */
+		{     1, ESNR, ESNR, ESNR,    4, ESWR,	  6, ESNR},	// S0: NOAS
+		{     1,    1,    1,    2,	  3,    3,   3,    3},	// S1: NOAS
+		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S2: ASNR (MVID)
+		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S3: ASWR (KEY)
+		{     4,    4,    4,    4,    5, ESWR,	  4,    4},	// S4: NOAS
+		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S5: ASNR (SL)
+		{     6,    6,    6,    6,    6, ESWR,	  7,    6},	// S6: NOAS
+		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S7: ASNR (COM)
+		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S8: ASNR (ES)
+		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS}  // S9: ASWR (ER)
 };
 
 /* Define accepting states types */
@@ -195,7 +212,7 @@ static sofia_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
 #define FSWR	2		/* accepting state with retract */
 
 /* TO_DO: Define list of acceptable states */
-static sofia_intg stateType[NUM_STATES] = {
+static corex_intg stateType[NUM_STATES] = {
 	NOFS, /* 00 */
 	NOFS, /* 01 */
 	FSNR, /* 02 (MID) - Methods */
@@ -215,11 +232,11 @@ TO_DO: Adjust your functions'definitions
 */
 
 /* Static (local) function  prototypes */
-sofia_intg			startScanner(BufferPointer psc_buf);
-static sofia_intg	nextClass(sofia_char c);					/* character class function */
-static sofia_intg	nextState(sofia_intg, sofia_char);		/* state machine function */
-sofia_void			printScannerData(ScannerData scData);
-Token				tokenizer(sofia_void);
+corex_intg			startScanner(BufferPointer psc_buf);
+static corex_intg	nextClass(corex_char c);					/* character class function */
+static corex_intg	nextState(corex_intg, corex_char);		/* state machine function */
+corex_void			printScannerData(ScannerData scData);
+Token				tokenizer(corex_void);
 
 /*
 -------------------------------------------------
@@ -228,22 +245,22 @@ Automata definitions
 */
 
 /* TO_DO: Pointer to function (of one char * argument) returning Token */
-typedef Token(*PTR_ACCFUN)(sofia_string lexeme);
+typedef Token(*PTR_ACCFUN)(corex_string lexeme);
 
 /* Declare accepting states functions */
-Token funcSL	(sofia_string lexeme);
-Token funcIL	(sofia_string lexeme);
-Token funcID	(sofia_string lexeme);
-Token funcCMT   (sofia_string lexeme);
-Token funcKEY	(sofia_string lexeme);
-Token funcErr	(sofia_string lexeme);
+Token funcSL(corex_string lexeme);
+Token funcIL(corex_string lexeme);
+Token funcID(corex_string lexeme);
+Token funcCMT(corex_string lexeme);
+Token funcKEY(corex_string lexeme);
+Token funcErr(corex_string lexeme);
 
-/* 
- * Accepting function (action) callback table (array) definition 
+/*
+ * Accepting function (action) callback table (array) definition
  * If you do not want to use the typedef, the equvalent declaration is:
  */
 
-/* TO_DO: Define final state table */
+ /* TO_DO: Define final state table */
 static PTR_ACCFUN finalStateTable[NUM_STATES] = {
 	NULL,		/* -    [00] */
 	NULL,		/* -    [01] */
@@ -267,7 +284,7 @@ Language keywords
 #define KWT_SIZE 10
 
 /* TO_DO: Define the list of keywords */
-static sofia_string keywordTable[KWT_SIZE] = {
+static corex_string keywordTable[KWT_SIZE] = {
 	"data",		/* KW00 */
 	"code",		/* KW01 */
 	"int",		/* KW02 */
@@ -288,15 +305,15 @@ static sofia_string keywordTable[KWT_SIZE] = {
 
 #define INDENT '\t'  /* Tabulation */
 
-/* TO_DO: Should be used if no symbol table is implemented */
+ /* TO_DO: Should be used if no symbol table is implemented */
 typedef struct languageAttributes {
-	sofia_char indentationCharType;
-	sofia_intg indentationCurrentPos;
+	corex_char indentationCharType;
+	corex_intg indentationCurrentPos;
 	/* TO_DO: Include any extra attribute to be used in your scanner (OPTIONAL and FREE) */
 } LanguageAttributes;
 
 /* Number of errors */
-sofia_intg numScannerErrors;
+corex_intg numScannerErrors;
 
 /* Scanner data */
 ScannerData scData;
