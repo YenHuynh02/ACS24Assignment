@@ -65,7 +65,7 @@ ECHO "[READER SCRIPT .........................]"
 #define RTE_CODE 1  /* Value for run-time error */
 
 /* TO_DO: Define the number of tokens */
-#define NUM_TOKENS 13
+#define NUM_TOKENS 15
 
 /* TO_DO: Define Token codes - Create your token classes */
 enum TOKENS {
@@ -78,10 +78,12 @@ enum TOKENS {
 	LBR_T,		/*  6: Left brace token */
 	RBR_T,		/*  7: Right brace token */
 	KW_T,		/*  8: Keyword token */
-	EOS_T,		/*  9: End of statement (semicolon) */
+	SEOF_T,		/*  9: Source end of files */
 	RTE_T,		/* 10: Run-time error token */
-	SEOF_T,		/* 11: Source end-of-file token */
-	CMT_T		/* 12: Comment token */
+	CMT_T,		/* 11: Comment token */
+	LW_T,		/* 12: Leftward Operator*/
+	RW_T,		/* 13: Rightward Operator*/
+	EQ_T		/* 14: Equal operator*/
 };
 
 /* TO_DO: Define the list of keywords */
@@ -95,10 +97,12 @@ static corex_string tokenStrTable[NUM_TOKENS] = {
 	"LBR_T",
 	"RBR_T",
 	"KW_T",
-	"EOS_T",
-	"RTE_T",
 	"SEOF_T",
-	"CMT_T"
+	"RTE_T",
+	"CMT_T",
+	"LW_T",
+	"RW_T",	
+	"EQ_T"
 };
 
 /* TO_DO: Operators token attributes */
@@ -159,6 +163,7 @@ typedef struct scannerData {
 #define CHRCOL3 '&'
 #define CHRCOL4 '\''
 #define CHRCOL6 '#'
+#define CHRCOL7 '\n'
 
 /* These constants will be used on VID / MID function */
 #define MNID_SUF '&'
@@ -171,40 +176,40 @@ typedef struct scannerData {
 
  /* TO_DO: State transition table definition */
 #define NUM_STATES		11
-#define CHAR_CLASSES	11
-
-///* TO_DO: Transition table - type of states defined in separate table */
-//static corex_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
-//	/*    [A-z],[0-9],    _,    /,   #,    \n,   * ,   .  ,  '  ,  " , Others
-//		   L(0), D(1), U(2), S(3), H(4), N(5), A(6), P(7), Q(8), R(9), O(10) */
-//		{     7, ESNR, ESNR, ESNR, 1||3, ESNR, ESNR, ESNR,    9, ESNR, ESNR},	// S0
-//		{  ESWR,	7,    7, ESNR,	  4,    1, ESNR, ESNR, ESWR, ESNR, 3   },	// S1
-//		{    FS, ESWR, ESWR, ESNR, ESWR, ESWR, ESNR, ESNR,   FS, ESNR, 4   },	// S2: SLC
-//		{    FS,   FS,   FS,   FS,    5,   FS, ESNR, ESNR,   FS,   FS, ESWR},	// S3
-//		{    FS,   FS,   FS,   FS, ESWR,   FS,	 FS,   FS,   FS,   FS, 5   },	// S4
-//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, ESWR},	// S5
-//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, FS  },	// S6: MLC
-//		{     8,    8,    8,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, FS  },	// S7: ASNR (COM)
-//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS,  9  },	// S8: VID | MID | KEY
-//		{     9,    9,    9,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, ESWR},	// S9 
-//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS,   FS,   FS, FS  },	// S10: SL
-//};
+#define CHAR_CLASSES	9
 
 /* TO_DO: Transition table - type of states defined in separate table */
 static corex_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
-	/*    [A-z],[0-9],    _,    &,   \', SEOF,    #, other
-		   L(0), D(1), U(2), M(3), Q(4), E(5), C(6),  O(7) */
-		{     1, ESNR, ESNR, ESNR,    4, ESWR,	  6, ESNR},	// S0: NOAS
-		{     1,    1,    1,    2,	  3,    3,   3,    3},	// S1: NOAS
-		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S2: ASNR (MVID)
-		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S3: ASWR (KEY)
-		{     4,    4,    4,    4,    5, ESWR,	  4,    4},	// S4: NOAS
-		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S5: ASNR (SL)
-		{     6,    6,    6,    6,    6, ESWR,	  7,    6},	// S6: NOAS
-		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S7: ASNR (COM)
-		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S8: ASNR (ES)
-		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS}  // S9: ASWR (ER)
+	/*    [A-z],[0-9],    _,    #,    \n,    .,    ',    ",   +,-,*,/, other
+		   L(0), D(1), U(2), H(3), N(4), P(5), Q(6), R(7),  O(8) */
+		{     1, ESNR, ESNR,    1,    2, ESNR,    9, ESNR,   7},	// S0: NOAS
+		{     1,    1,    1,    1,    2,    1,    1,    1,   1},	// S1: NOAS
+		{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,  FS},	// S2: ASNR (SLC)
+		{     3,    3,    3,    5,    4,    3,    3,    3,   3},	// S3: NOAS
+		{     4,    4,    4,    4,    4,    4,    4,    4,   4},	// S4: NOAS
+		{     5,    5,    5,    5,    5,    5,    5,    5,   5},	// S5: NOAS
+		{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,  FS},	// S6: ASNR (MLC)
+		{     7,    7,    7,    7,    7,    7,    8,    7,   7},	// S7: NOAS
+		{     8,    8,    8,    8,    8,    8,    8,    8,   8},	// S8: ASNR (VID | MID | KEY)
+		{     9,    9,    9,    9,    9,    9,    9,   10,   9},	// S9: NOAS
+		{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,  FS}		// S10: ASNR (SL)
 };
+
+/* TO_DO: Transition table - type of states defined in separate table */
+//static corex_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
+//	/*    [A-z],[0-9],    _,    &,   \', SEOF,    #, other
+//		   L(0), D(1), U(2), M(3), Q(4), E(5), C(6),  O(7) */
+//		{     1, ESNR, ESNR, ESNR,    4, ESWR,	  6, ESNR},	// S0: NOAS
+//		{     1,    1,    1,    2,	  3,    3,   3,    3},	// S1: NOAS
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S2: ASNR (MVID)
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S3: ASWR (KEY)
+//		{     4,    4,    4,    4,    5, ESWR,	  4,    4},	// S4: NOAS
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S5: ASNR (SL)
+//		{     6,    6,    6,    6,    6, ESWR,	  7,    6},	// S6: NOAS
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S7: ASNR (COM)
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS},	// S8: ASNR (ES)
+//		{    FS,   FS,   FS,   FS,   FS,   FS,	 FS,   FS}  // S9: ASWR (ER)
+//};
 
 /* Define accepting states types */
 #define NOFS	0		/* not accepting state */
@@ -213,16 +218,27 @@ static corex_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
 
 /* TO_DO: Define list of acceptable states */
 static corex_intg stateType[NUM_STATES] = {
+	//NOFS, /* 00 */
+	//NOFS, /* 01 */
+	//FSNR, /* 02 (MID) - Methods */
+	//FSWR, /* 03 (KEY) */
+	//NOFS, /* 04 */
+	//FSNR, /* 05 (SL) */
+	//NOFS, /* 06 */
+	//FSNR, /* 07 (COM) */
+	//FSNR, /* 08 (Err1 - no retract) */
+	//FSWR  /* 09 (Err2 - retract) */
 	NOFS, /* 00 */
 	NOFS, /* 01 */
-	FSNR, /* 02 (MID) - Methods */
-	FSWR, /* 03 (KEY) */
+	FSNR, /* 02 (SLC) - Single Line Comment */
+	NOFS, /* 03 */
 	NOFS, /* 04 */
-	FSNR, /* 05 (SL) */
-	NOFS, /* 06 */
-	FSNR, /* 07 (COM) */
-	FSNR, /* 08 (Err1 - no retract) */
-	FSWR  /* 09 (Err2 - retract) */
+	NOFS, /* 05 */
+	FSNR, /* 06 (MLC) - Multi Line Comment */
+	NOFS, /* 07 */
+	FSNR, /* 08 (VID | MID | KEY) */
+	NOFS, /* 09 */
+	FSNR  /* 10 (SL) - String Literal */
 };
 
 /*
@@ -264,7 +280,7 @@ Token funcErr(corex_string lexeme);
 static PTR_ACCFUN finalStateTable[NUM_STATES] = {
 	NULL,		/* -    [00] */
 	NULL,		/* -    [01] */
-	funcID,		/* MNID	[02] */
+	funcCMT,		/* MNID	[02] */
 	funcKEY,	/* KEY  [03] */
 	NULL,		/* -    [04] */
 	funcSL,		/* SL   [05] */
