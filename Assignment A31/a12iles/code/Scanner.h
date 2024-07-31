@@ -30,12 +30,12 @@
 #define RTE_CODE 1  /* Value for run-time error */
 
 /* Define the number of tokens */
-#define NUM_TOKENS 22
+#define NUM_TOKENS 23
 
 /* Define Token codes - Create your token classes */
 enum TOKENS {
     ERR_T,      /*  0: Error token */
-    MNID_T,     /*  1: Method name identifier token (start: &) */
+    MNID_T,     /*  1: Method name identifier token */
     INL_T,      /*  2: Integer literal token */
     STR_T,      /*  3: String literal token */
     LPR_T,      /*  4: Left parenthesis token */
@@ -51,11 +51,12 @@ enum TOKENS {
     EQ_T,       /* 14: Equal operator */
     SQ_T,       /* 15: Single quotations */
     DQ_T,       /* 16: Double quotations */
-    FPL_T,      /* 17: Floating-point Literals*/
-    ART_T,      /* 18: Arithmetic operator*/
-    SC_T,       /* 19: String concatenation operator*/
-    LG_T,       /* 20: Logical operator*/
-    AO_T        /* 21: Assignment operator*/
+    FPL_T,      /* 17: Floating-point Literals */
+    ART_T,      /* 18: Arithmetic operator */
+    SC_T,       /* 19: String concatenation operator */
+    LG_T,       /* 20: Logical operator */
+    AO_T,       /* 21: Assignment operator */
+    VID_T       /* 22: Variable identifier*/
 };
 
 /* Define the list of keywords */
@@ -83,7 +84,8 @@ static corex_string tokenStrTable[NUM_TOKENS] = {
     "ART_T",
     "SC_T",
     "LG_T",
-    "AO_T"
+    "AO_T",
+    "VID_T"
 };
 
 /* Define the list of keywords */
@@ -139,7 +141,7 @@ typedef struct idAttibutes {
 typedef struct Token {
     corex_intg code;                /* token code */
     TokenAttribute attribute;   /* token attribute */
-    IdAttibutes   idAttribute;  /* not used in this scanner implementation - for further use */
+    IdAttibutes idAttribute;    /* not used in this scanner implementation - for further use */
 } Token;
 
 /* Scanner */
@@ -147,14 +149,12 @@ typedef struct scannerData {
     corex_intg scanHistogram[NUM_TOKENS];   /* Statistics of chars */
 } ScannerData, * pScanData;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /* EOF definitions */
 #define CHARSEOF0 '\0'
 #define CHARSEOF255 0xFF
 
 /* Special case tokens processed separately one by one in the token-driven part of the scanner:
- * LPR_T, RPR_T, LBR_T, RBR_T, EOS_T, SEOF_T and special chars used for tokenis include _, & and ' */
+ * LPR_T, RPR_T, LBR_T, RBR_T, EOS_T, SEOF_T and special chars used for tokenizing include _, & and ' */
 
  /* Define lexeme FIXED classes */
  /* These constants will be used on nextClass */
@@ -215,14 +215,12 @@ static corex_intg stateType[NUM_STATES] = {
     FSNR  /* 10 (SL) - String Literal */
 };
 
-/* Adjust your functions'definitions */
-
-/* Static (local) function  prototypes */
-corex_intg          startScanner(BufferPointer psc_buf);
-static corex_intg   nextClass(corex_char c);                    /* character class function */
-static corex_intg   nextState(corex_intg, corex_char);      /* state machine function */
-corex_void          printScannerData(ScannerData scData);
-Token               tokenizer(corex_void);
+/* Static (local) function prototypes */
+corex_intg startScanner(BufferPointer psc_buf);
+static corex_intg nextClass(corex_char c);        /* character class function */
+static corex_intg nextState(corex_intg, corex_char); /* state machine function */
+corex_void printScannerData(ScannerData scData);
+Token tokenizer(corex_void);
 
 /* Automata definitions */
 
@@ -237,32 +235,22 @@ Token funcCMT(corex_string lexeme);
 Token funcKEY(corex_string lexeme);
 Token funcErr(corex_string lexeme);
 
-/* Accepting function (action) callback table (array) definition
- * If you do not want to use the typedef, the equvalent declaration is:
- */
-
- /* Define final state table */
+/* Accepting function (action) callback table (array) definition */
 static PTR_ACCFUN finalStateTable[NUM_STATES] = {
     NULL,       /* -    [00] */
     NULL,       /* -    [01] */
-    funcCMT,        /* MNID    [02] */
+    funcCMT,    /* CMT  [02] */
     funcKEY,    /* KEY  [03] */
     NULL,       /* -    [04] */
     funcSL,     /* SL   [05] */
     NULL,       /* -    [06] */
-    funcCMT,    /* COM  [07] */
-    funcErr,    /* ERR1 [06] */
-    funcErr     /* ERR2 [07] */
+    funcCMT,    /* CMT  [07] */
+    funcID,     /* VID  [08] */
+    funcErr,    /* ERR1 [09] */
+    funcErr     /* ERR2 [10] */
 };
 
-/* Language keywords */
-
-/* Define the number of Keywords from the language */
-
-/* NEW SECTION: About indentation */
-
-/* Scanner attributes to be used (ex: including: intendation data */
-
+/* Define final state table */
 #define INDENT '\t'  /* Tabulation */
 
 /* Should be used if no symbol table is implemented */
