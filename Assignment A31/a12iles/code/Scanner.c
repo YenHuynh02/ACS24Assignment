@@ -1,4 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <ctype.h>
@@ -80,6 +80,25 @@ Token tokenizer(corex_void) {
         case '}':
             currentToken.code = RBR_T;
             scData.scanHistogram[currentToken.code]++;
+            return currentToken;
+        case '<':
+        case '-':
+        case '>':
+            currentToken.code = AO_T;
+            lexemeBuffer = readerCreate(3, 0, MODE_FIXED); // Create a buffer for these operators
+            if (!lexemeBuffer) {
+                fprintf(stderr, "Scanner error: Can not create buffer\n");
+                exit(1);
+            }
+            readerAddChar(lexemeBuffer, c);
+            readerAddChar(lexemeBuffer, READER_TERMINATOR);
+            currentToken.attribute.contentString = readerGetPosWrte(stringLiteralTable);
+            for (i = 0; i < 1; i++) {
+                readerAddChar(stringLiteralTable, readerGetChar(lexemeBuffer));
+            }
+            readerAddChar(stringLiteralTable, CHARSEOF0); // Add string terminator
+            scData.scanHistogram[currentToken.code]++;
+            readerRestore(lexemeBuffer);
             return currentToken;
         case '\'':
             currentToken.code = SQ_T;
@@ -183,8 +202,6 @@ Token tokenizer(corex_void) {
     }
 }
 
-
-
 corex_intg nextState(corex_intg state, corex_char c) {
     corex_intg col;
     corex_intg next;
@@ -286,26 +303,9 @@ Token funcID(corex_string lexeme) {
     size_t length = strlen(lexeme);
     corex_char lastch = lexeme[length - 1];
     corex_intg isID = COREX_FALSE;
-
-    switch (lastch) {
-    case MNID_SUF:
-        currentToken.code = MNID_T;
-        scData.scanHistogram[currentToken.code]++;
-        isID = COREX_TRUE;
-        break;
-    default:
-        strncpy(currentToken.attribute.idLexeme, lexeme, VID_LEN);
-        currentToken.attribute.idLexeme[VID_LEN] = CHARSEOF0;
-        currentToken.code = ERR_T;
-        scData.scanHistogram[currentToken.code]++;
-        break;
-    }
-
-    if (isID == COREX_TRUE) {
-        strncpy(currentToken.attribute.idLexeme, lexeme, VID_LEN);
-        currentToken.attribute.idLexeme[VID_LEN] = CHARSEOF0;
-    }
-
+    currentToken.code = MNID_T;
+    scData.scanHistogram[currentToken.code]++;
+    strncpy(currentToken.attribute.idLexeme, lexeme, VID_LEN);
     return currentToken;
 }
 
@@ -336,17 +336,12 @@ Token funcSL(corex_string lexeme) {
 Token funcKEY(corex_string lexeme) {
     Token currentToken = { 0 };
     corex_intg kwindex = -1, j = 0;
- 
+
     for (j = 0; j < KWT_SIZE; j++) {
-        if (strcmp("print", keywordTable[j]) == 0) {
+        if (!strcmp(lexeme, keywordTable[j])) {
             kwindex = j;
             break;
         }
-
-        /*else if (!strcmp(lexeme, keywordTable[j]) == 0) {
-            kwindex = j;
-            break;
-        }*/
     }
 
     if (kwindex != -1) {
@@ -425,6 +420,9 @@ corex_void printToken(Token t) {
         break;
     case DQ_T:
         printf("DQ_T\n");
+        break;
+    case AO_T:
+        printf("AO_T\t\t%s\n", readerGetContent(stringLiteralTable, t.attribute.contentString));
         break;
     default:
         printf("Scanner error: invalid token code: %d\n", t.code);
