@@ -30,7 +30,7 @@
 #define RTE_CODE 1  /* Value for run-time error */
 
 /* Define the number of tokens */
-#define NUM_TOKENS 23
+#define NUM_TOKENS 24
 
 /* Define Token codes - Create your token classes */
 enum TOKENS {
@@ -48,7 +48,7 @@ enum TOKENS {
     CMT_T,      /* 11: Comment token */
     LW_T,       /* 12: Leftward Operator */
     RW_T,       /* 13: Rightward Operator */
-    EQ_T,       /* 14: Equal operator */
+    CSN_T,      /* 14: Colon, Semi-colon*/
     SQ_T,       /* 15: Single quotations */
     DQ_T,       /* 16: Double quotations */
     FPL_T,      /* 17: Floating-point Literals */
@@ -56,11 +56,12 @@ enum TOKENS {
     SC_T,       /* 19: String concatenation operator */
     LG_T,       /* 20: Logical operator */
     AO_T,       /* 21: Assignment operator */
-    VID_T       /* 22: Variable identifier*/
+    VID_T,      /* 22: Variable identifier*/
+    LR_T        /* 23: Leftward and Rightward*/
 };
 
 /* Define the list of keywords */
-#define KWT_SIZE 14
+#define KWT_SIZE 20
 
 static corex_string tokenStrTable[NUM_TOKENS] = {
     "ERR_T",
@@ -77,7 +78,7 @@ static corex_string tokenStrTable[NUM_TOKENS] = {
     "CMT_T",
     "LW_T",
     "RW_T",
-    "EQ_T",
+    "CSN_T",
     "SQ_T",
     "DQ_T",
     "FPL_T",
@@ -85,7 +86,8 @@ static corex_string tokenStrTable[NUM_TOKENS] = {
     "SC_T",
     "LG_T",
     "AO_T",
-    "VID_T"
+    "VID_T",
+    "LR_T"
 };
 
 /* Define the list of keywords */
@@ -103,7 +105,13 @@ static corex_string keywordTable[KWT_SIZE] = {
     "FALSE",    /* KW10 */
     "NULL",     /* KW11 */
     "Inf",      /* KW12 */
-    "print"     /* KW13 */
+    "print",    /* KW13 */
+    "readline", /* KW14 */
+    "scan",     /* KW15 */
+    "read.csv", /* KW16 */
+    "read.table", /* KW17 */
+    "file",      /* KW18 */
+    "paste"     /* KW19*/
 };
 
 /* Operators token attributes */
@@ -230,6 +238,7 @@ typedef Token(*PTR_ACCFUN)(corex_string lexeme);
 /* Declare accepting states functions */
 Token funcSL(corex_string lexeme);
 Token funcIL(corex_string lexeme);
+Token funcFL(corex_string lexeme);
 Token funcID(corex_string lexeme);
 Token funcCMT(corex_string lexeme);
 Token funcKEY(corex_string lexeme);
