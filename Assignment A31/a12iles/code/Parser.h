@@ -1,4 +1,4 @@
-﻿/*
+/*
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Fall, 2023
@@ -67,42 +67,42 @@
 #endif
 
 /* Global vars */
-static Token lookahead;
-extern BufferPointer stringLiteralTable;
-extern corex_intg line;
-extern Token tokenizer(corex_void);
-extern corex_string keywordTable[KWT_SIZE];
-static corex_intg syntaxErrorNumber = 0;
+static Token			lookahead;
+extern BufferPointer	stringLiteralTable;
+extern BufferPointer	contentBuffer;
+extern corex_intg		line;
+extern Token			tokenizer(corex_void);
+extern corex_string		keywordTable[KWT_SIZE];
+static corex_intg		syntaxErrorNumber = 0;
 
-#define LANG_WRTE "print&"
-#define LANG_READ "input&"
-#define LANG_MAIN "main&"
+
+/* TO_DO: Create ALL constants for keywords (sequence given in table.h) */
 
 /* Constants */
 enum KEYWORDS {
-    NO_ATTR = -1,
-    KW_if,
-    KW_else,
-    KW_repeat,
-    KW_while,
-    KW_function,
-    KW_for,
-    KW_in,
-    KW_next,
-    KW_break,
-    KW_TRUE,
-    KW_FALSE,
-    KW_NULL,
-    KW_Inf,
-    KW_print
+	NO_ATTR = -1,
+	KW_if,
+	KW_else,
+	KW_repeat,
+	KW_while,
+	KW_function,
+	KW_for,
+	KW_in,
+	KW_next,
+	KW_break,
+	KW_TRUE,
+	KW_FALSE,
+	KW_NULL,
+	KW_Inf,
+	KW_print
 };
 
-/* Define the number of BNF rules */
-#define NUM_BNF_RULES 12
+/* TO_DO: Define the number of BNF rules */
+#define NUM_BNF_RULES 17
 
 /* Parser */
 typedef struct parserData {
-    corex_intg parsHistogram[NUM_BNF_RULES]; /* Number of BNF Statements */
+	corex_intg parsHistogram[NUM_BNF_RULES];	/* Number of BNF Statements */
 } ParserData, * pParsData;
 
 /* Number of errors */
@@ -113,54 +113,58 @@ ParserData psData;
 
 /* Function definitions */
 corex_void startParser();
-corex_void printBNFData(ParserData psData);
 corex_void matchToken(corex_intg, corex_intg);
 corex_void syncErrorHandler(corex_intg);
 corex_void printError();
+corex_void printBNFData(ParserData psData);
 
 /* List of BNF statements */
 enum BNF_RULES {
-    BNF_error, /*  0: Error token */
-    BNF_codeSession, /*  1 */
-    BNF_comment, /*  2 */
-    BNF_dataSession, /*  3 */
-    BNF_optVarListDeclarations, /*  4 */
-    BNF_optionalStatements, /*  5 */
-    BNF_outputStatement, /*  6 */
-    BNF_outputVariableList, /*  7 */
-    BNF_program, /*  8 */
-    BNF_statement, /*  9 */
-    BNF_statements, /* 10 */
-    BNF_statementsPrime /* 11 */
+	BNF_error,										/*  0: Error token */
+	BNF_comment,									/*  1 */
+	BNF_optPackage,									/*  2 */
+	BNF_VarDeclarations,							/*  3 */
+	BNF_arithmetic,									/*  4 */
+	BNF_iteration,									/*  5 */
+	BNF_keyword,									/*  6 */
+	BNF_stringExpression,							/*  7 */
+	BNF_conditionExpression,						/*  8 */
+	BNF_relationalExpression,						/*  9 */
+	BNF_dataDeclaration,							/* 10 */
+	BNF_program,									/* 11 */
+	BNF_EOF,										/* 12 */
+	BNF_assignmentOperator,							/* 13 */
+	BNF_separator									/* 14 */
 };
 
-/* Define the list of keywords */
+
+/* TO_DO: Define the list of keywords */
 static corex_string BNFStrTable[NUM_BNF_RULES] = {
-    "BNF_error",
-    "BNF_codeSession",
-    "BNF_comment",
-    "BNF_dataSession",
-    "BNF_optVarListDeclarations",
-    "BNF_optionalStatements",
-    "BNF_outputStatement",
-    "BNF_outputVariableList",
-    "BNF_program",
-    "BNF_statement",
-    "BNF_statements",
-    "BNF_statementsPrime"
+	"BNF_error",										
+	"BNF_comment",									
+	"BNF_optPackage",
+	"BNF_VarDeclarations",											
+	"BNF_arithmetic",							
+	"BNF_iteration",
+	"BNF_keyword",
+	"BNF_stringExpression",
+	"BNF_conditionExpression",
+	"BNF_relationalExpression",
+	"BNF_dataDeclaration",
+	"BNF_program",
+	"BNF_EOF",
+	"BNF_assignmentOperator",
+	"BNF_separator"
 };
 
-/* Place ALL non-terminal function declarations */
-corex_void codeSession();
+/* TO_DO: Place ALL non-terminal function declarations */
 corex_void comment();
-corex_void dataSession();
-corex_void optVarListDeclarations();
-corex_void optionalStatements();
-corex_void outputStatement();
-corex_void outputVariableList();
 corex_void program();
-corex_void statement();
-corex_void statements();
-corex_void statementsPrime();
+corex_void VarDeclarations();
+corex_void arithmetic();
+corex_void keyword();
+corex_void conditionExpression();
+corex_void separator();
+corex_void dataDeclaration();
 
 #endif
