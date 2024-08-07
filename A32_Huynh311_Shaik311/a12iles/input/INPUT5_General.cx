@@ -1,0 +1,31 @@
+# CoreX Example
+The program is "lexically" correct and should not generate any error (based on Platypus from Svillen Ranev) #
+
+i <- 1.2
+sum <- 7.8705
+i <- 0
+
+do {
+ i = i + 2
+ a = a * i / 0.5
+ sum = sum + a - 1
+	
+} while (i <= 32767)
+
+text <- ' ';
+if (text == ' ') {
+ text = 'prog' + 'ram';
+}
+
+else {
+ text = text + 'ram'
+}
+cat('This is a program: ', text);
+
+if (text == "program' && sum == 8 || i > 10) {
+ cat(sum + "\n")
+}
+
+else{};
+
+

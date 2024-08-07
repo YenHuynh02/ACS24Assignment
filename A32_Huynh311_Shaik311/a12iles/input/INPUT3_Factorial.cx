@@ -1,0 +1,12 @@
+# CoreX Example 4:
+  Testing numbers (ex: factorial) #
+
+f <- 1;
+i <- 1;
+n = readline(prompt = 'Write a number: ');
+n = as.integer(input);
+do {
+    f = f * i;
+    i = i + 1;
+} while (i < n); 
+cat("Factorial: ", f);
